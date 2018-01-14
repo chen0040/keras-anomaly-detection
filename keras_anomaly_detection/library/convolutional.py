@@ -12,6 +12,7 @@ class Conv1DAutoEncoder(object):
         self.model = None
         self.time_window_size = None
         self.metric = None
+        self.threshold = 5.0
         self.config = None
 
     @staticmethod
@@ -44,30 +45,28 @@ class Conv1DAutoEncoder(object):
         self.config = np.load(config_file_path).item()
         self.metric = self.config['metric']
         self.time_window_size = self.config['time_window_size']
+        self.threshold = self.config['threshold']
         self.model = Conv1DAutoEncoder.create_model(self.time_window_size, self.metric)
         weight_file_path = Conv1DAutoEncoder.get_weight_file(model_dir_path)
         self.model.load_weights(weight_file_path)
 
-    def fit(self, timeseries_dataset, model_dir_path, batch_size=None, epochs=None, validation_split=None, metric=None):
+    def fit(self, timeseries_dataset, model_dir_path, batch_size=None, epochs=None, validation_split=None, metric=None,
+            estimated_negative_sample_ratio=None):
         if batch_size is None:
             batch_size = 8
         if epochs is None:
-            epochs = 20
+            epochs = 100
         if validation_split is None:
             validation_split = 0.2
         if metric is None:
             metric = 'mean_absolute_error'
+        if estimated_negative_sample_ratio is None:
+            estimated_negative_sample_ratio = 0.9
 
         self.time_window_size = timeseries_dataset.shape[1]
         self.metric = metric
 
         input_timeseries_dataset = np.expand_dims(timeseries_dataset, axis=2)
-
-        self.config = dict()
-        self.config['time_window_size'] = self.time_window_size
-        self.config['metric'] = self.metric
-        config_file_path = Conv1DAutoEncoder.get_config_file(model_dir_path=model_dir_path)
-        np.save(config_file_path, self.config)
 
         weight_file_path = Conv1DAutoEncoder.get_weight_file(model_dir_path=model_dir_path)
         architecture_file_path = Conv1DAutoEncoder.get_architecture_file(model_dir_path)
@@ -80,8 +79,29 @@ class Conv1DAutoEncoder(object):
                        callbacks=[checkpoint])
         self.model.save_weights(weight_file_path)
 
-    def anomaly(self, timeseries_dataset):
+        scores = self.predict(timeseries_dataset)
+        scores.sort()
+        cut_point = int(estimated_negative_sample_ratio * len(scores))
+        self.threshold = scores[cut_point]
+
+        print('estimated threshold at 90% data is ' + str(self.threshold))
+
+        self.config = dict()
+        self.config['time_window_size'] = self.time_window_size
+        self.config['metric'] = self.metric
+        self.config['threshold'] = self.threshold
+        config_file_path = Conv1DAutoEncoder.get_config_file(model_dir_path=model_dir_path)
+        np.save(config_file_path, self.config)
+
+    def predict(self, timeseries_dataset):
         input_timeseries_dataset = np.expand_dims(timeseries_dataset, axis=2)
         target_timeseries_dataset = self.model.predict(x=input_timeseries_dataset)
-        error = np.linalg.norm(timeseries_dataset - target_timeseries_dataset, axis=-1)
-        print(error)
+        dist = np.linalg.norm(timeseries_dataset - target_timeseries_dataset, axis=-1)
+        return dist
+
+    def anomaly(self, timeseries_dataset, threshold=None):
+        if threshold is not None:
+            self.threshold = threshold
+
+        dist = self.predict(timeseries_dataset)
+        return zip(dist >= self.threshold, dist)
