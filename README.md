@@ -2,17 +2,19 @@
 
 Anomaly detection implemented in Keras
 
-The the anomaly detection is implemented using auto-encoder with convolutional and recurrent networks and can be applied
-to timeseries data to detect timeseries time windows that have anomaly pattern
-
 The source codes of the recurrent and convolutional networks auto-encoders for anomaly detection can be found in
 [keras_anomaly_detection/library/convolutional.py](keras_anomaly_detection/library/convolutional.py) and
-[keras_anomaly_detection/library/recurrent.py](keras_anomaly_detection/library/recurrent.py) and contains the following
-models:
+[keras_anomaly_detection/library/recurrent.py](keras_anomaly_detection/library/recurrent.py) 
 
-* LSTM recurrent network: LstmAutoEncoder in [keras_anomaly_detection/library/recurrent.py](keras_anomaly_detection/library/recurrent.py)
-* Convolutional 1D network: Conv1DAutoEncoder in [keras_anomaly_detection/library/convolutional.py](keras_anomaly_detection/library/convolutional.py)
-* Bidirectional LSTM recurrent network auto-encoder: in [keras_anomaly_detection/library/recurrent.py](keras_anomaly_detection/library/recurrent.py)
+The the anomaly detection is implemented using auto-encoder with convolutional and recurrent networks and can be applied
+to:
+
+* timeseries data to detect timeseries time windows that have anomaly pattern
+    * LstmAutoEncoder in [keras_anomaly_detection/library/recurrent.py](keras_anomaly_detection/library/recurrent.py)
+    * Conv1DAutoEncoder in [keras_anomaly_detection/library/convolutional.py](keras_anomaly_detection/library/convolutional.py)
+    * CnnLstmAutoEncoder in [keras_anomaly_detection/library/recurrent.py](keras_anomaly_detection/library/recurrent.py)
+* structured data (i.e., tabular data) to detect anomaly in data records
+    * Conv1DAutoEncoder in [keras_anomaly_detection/library/convolutional.py](keras_anomaly_detection/library/convolutional.py)
 
 # Usage
 
