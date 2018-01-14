@@ -25,6 +25,15 @@ class LstmAutoEncoder(object):
         print(model.summary())
         return model
 
+    def load_model(self, model_dir_path):
+        config_file_path = LstmAutoEncoder.get_config_file(model_dir_path)
+        self.config = np.load(config_file_path).item()
+        self.metric = self.config['metric']
+        self.time_window_size = self.config['time_window_size']
+        self.model = LstmAutoEncoder.create_model(self.time_window_size, self.metric)
+        weight_file_path = LstmAutoEncoder.get_weight_file(model_dir_path)
+        self.model.load_weights(weight_file_path)
+
     @staticmethod
     def get_config_file(model_dir_path):
         return model_dir_path + '/' + LstmAutoEncoder.model_name + '-config.npy'

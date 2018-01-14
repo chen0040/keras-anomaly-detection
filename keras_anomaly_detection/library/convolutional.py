@@ -39,6 +39,15 @@ class Conv1DAutoEncoder(object):
     def get_architecture_file(model_dir_path):
         return model_dir_path + '/' + Conv1DAutoEncoder.model_name + '-architecture.json'
 
+    def load_model(self, model_dir_path):
+        config_file_path = Conv1DAutoEncoder.get_config_file(model_dir_path)
+        self.config = np.load(config_file_path).item()
+        self.metric = self.config['metric']
+        self.time_window_size = self.config['time_window_size']
+        self.model = Conv1DAutoEncoder.create_model(self.time_window_size, self.metric)
+        weight_file_path = Conv1DAutoEncoder.get_weight_file(model_dir_path)
+        self.model.load_weights(weight_file_path)
+
     def fit(self, timeseries_dataset, model_dir_path, batch_size=None, epochs=None, validation_split=None, metric=None):
         if batch_size is None:
             batch_size = 8
@@ -53,7 +62,6 @@ class Conv1DAutoEncoder(object):
         self.metric = metric
 
         input_timeseries_dataset = np.expand_dims(timeseries_dataset, axis=2)
-        print(input_timeseries_dataset.shape)
 
         self.config = dict()
         self.config['time_window_size'] = self.time_window_size
@@ -71,3 +79,9 @@ class Conv1DAutoEncoder(object):
                        verbose=Conv1DAutoEncoder.VERBOSE, validation_split=validation_split,
                        callbacks=[checkpoint])
         self.model.save_weights(weight_file_path)
+
+    def anomaly(self, timeseries_dataset):
+        input_timeseries_dataset = np.expand_dims(timeseries_dataset, axis=2)
+        target_timeseries_dataset = self.model.predict(x=input_timeseries_dataset)
+        error = np.linalg.norm(timeseries_dataset - target_timeseries_dataset, axis=-1)
+        print(error)
