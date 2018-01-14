@@ -13,6 +13,7 @@ to:
     * LstmAutoEncoder in [keras_anomaly_detection/library/recurrent.py](keras_anomaly_detection/library/recurrent.py)
     * Conv1DAutoEncoder in [keras_anomaly_detection/library/convolutional.py](keras_anomaly_detection/library/convolutional.py)
     * CnnLstmAutoEncoder in [keras_anomaly_detection/library/recurrent.py](keras_anomaly_detection/library/recurrent.py)
+    * BidirectionalLstmAutoEncoder in [keras_anomaly_detection/library/recurrent.py](keras_anomaly_detection/library/recurrent.py)
 * structured data (i.e., tabular data) to detect anomaly in data records
     * Conv1DAutoEncoder in [keras_anomaly_detection/library/convolutional.py](keras_anomaly_detection/library/convolutional.py)
 
