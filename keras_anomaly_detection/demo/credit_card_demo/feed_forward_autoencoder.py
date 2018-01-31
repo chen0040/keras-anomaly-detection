@@ -11,6 +11,8 @@ def main():
     # ecg data in which each row is a temporal sequence data of continuous values
     unzip(data_dir_path + '/creditcardfraud.zip', data_dir_path)
     csv_data = pd.read_csv(data_dir_path + '/creditcard.csv')
+    estimated_negative_sample_ratio = 1 - csv_data['Class'].sum() / csv_data['Class'].count()
+    print(estimated_negative_sample_ratio)
     creditcard_data = csv_data.drop(labels=['Class', 'Time'], axis=1)
     creditcard_data['Amount'] = StandardScaler().fit_transform(creditcard_data['Amount'].values.reshape(-1, 1))
     print(creditcard_data.head())
@@ -21,7 +23,8 @@ def main():
     ae = FeedForwardAutoEncoder()
 
     # fit the data and save model into model_dir_path
-    ae.fit(creditcard_np_data, model_dir_path=model_dir_path, estimated_negative_sample_ratio=0.9)
+    epochs = 20
+    ae.fit(creditcard_np_data, model_dir_path=model_dir_path, estimated_negative_sample_ratio=estimated_negative_sample_ratio, nb_epoch=epochs)
 
     # load back the model saved in model_dir_path detect anomaly
     ae.load_model(model_dir_path)
