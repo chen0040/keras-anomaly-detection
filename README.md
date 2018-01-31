@@ -2,9 +2,9 @@
 
 Anomaly detection implemented in Keras
 
-The source codes of the recurrent and convolutional networks auto-encoders for anomaly detection can be found in
+The source codes of the recurrent, convolutional and feedforward networks auto-encoders for anomaly detection can be found in
 [keras_anomaly_detection/library/convolutional.py](keras_anomaly_detection/library/convolutional.py) and
-[keras_anomaly_detection/library/recurrent.py](keras_anomaly_detection/library/recurrent.py) 
+[keras_anomaly_detection/library/recurrent.py](keras_anomaly_detection/library/recurrent.py) and
 
 The the anomaly detection is implemented using auto-encoder with convolutional and recurrent networks and can be applied
 to:
