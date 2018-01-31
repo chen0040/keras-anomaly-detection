@@ -1,4 +1,4 @@
-from keras.models import Model, load_model
+from keras.models import Model, model_from_json
 from keras.layers import Input, Dense
 from keras.callbacks import ModelCheckpoint
 from keras import regularizers
@@ -23,7 +23,7 @@ class FeedForwardAutoEncoder(object):
         self.threshold = self.config['threshold']
 
         architecture_file_path = FeedForwardAutoEncoder.get_architecture_file_path(model_dir_path)
-        self.model = load_model(architecture_file_path)
+        self.model = model_from_json(open(architecture_file_path, 'r').read())
         weight_file_path = FeedForwardAutoEncoder.get_weight_file_path(model_dir_path)
         self.model.load_weights(weight_file_path)
 
@@ -110,3 +110,10 @@ class FeedForwardAutoEncoder(object):
         target_data = self.model.predict(x=data)
         dist = np.linalg.norm(data - target_data, axis=-1)
         return dist
+
+    def anomaly(self, data, threshold=None):
+        if threshold is not None:
+            self.threshold = threshold
+
+        dist = self.predict(data)
+        return zip(dist >= self.threshold, dist)
