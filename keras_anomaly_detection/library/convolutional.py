@@ -84,7 +84,7 @@ class Conv1DAutoEncoder(object):
         cut_point = int(estimated_negative_sample_ratio * len(scores))
         self.threshold = scores[cut_point]
 
-        print('estimated threshold at 90% data is ' + str(self.threshold))
+        print('estimated threshold is ' + str(self.threshold))
 
         self.config = dict()
         self.config['time_window_size'] = self.time_window_size

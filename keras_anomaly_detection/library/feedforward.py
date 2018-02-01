@@ -96,7 +96,7 @@ class FeedForwardAutoEncoder(object):
         cut_point = int(estimated_negative_sample_ratio * len(scores))
         self.threshold = scores[cut_point]
 
-        print('estimated threshold at 90% data is ' + str(self.threshold))
+        print('estimated threshold is ' + str(self.threshold))
 
         self.config = dict()
         self.config['input_dim'] = self.input_dim
