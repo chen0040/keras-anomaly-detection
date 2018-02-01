@@ -3,7 +3,9 @@ from sklearn.preprocessing import StandardScaler
 
 from keras_anomaly_detection.library.feedforward import FeedForwardAutoEncoder
 from keras_anomaly_detection.demo.credit_card_demo.unzip_utils import unzip
-from sklearn.metrics import average_precision_score, recall_score, precision_score, f1_score
+from sklearn.metrics import average_precision_score, recall_score, precision_score, f1_score, confusion_matrix
+from matplotlib import pyplot as plt
+import seaborn as sns
 
 
 def main():
@@ -30,6 +32,7 @@ def main():
            estimated_negative_sample_ratio=estimated_negative_sample_ratio, nb_epoch=epochs)
 
     # load back the model saved in model_dir_path detect anomaly
+    LABELS = ["Normal", "Fraud"]
     y_true = []
     y_pred = []
     ae.load_model(model_dir_path)
@@ -50,6 +53,15 @@ def main():
     print('Precision: {0:0.2f}'.format(precision))
     print('Recall: {0:0.2f}'.format(recall))
     print('F1: {0:0.2f}'.format(f1))
+
+    conf_matrix = confusion_matrix(y_true, y_pred)
+
+    plt.figure(figsize=(12, 12))
+    sns.heatmap(conf_matrix, xticklabels=LABELS, yticklabels=LABELS, annot=True, fmt="d")
+    plt.title("Confusion matrix")
+    plt.ylabel('True class')
+    plt.xlabel('Predicted class')
+    plt.show()
 
 
 if __name__ == '__main__':
