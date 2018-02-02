@@ -18,6 +18,8 @@ def plot_confusion_matrix(y_true, y_pred):
 
 
 def plot_training_history(history):
+    if history is None:
+        return
     plt.plot(history['loss'])
     plt.plot(history['val_loss'])
     plt.title('model loss')

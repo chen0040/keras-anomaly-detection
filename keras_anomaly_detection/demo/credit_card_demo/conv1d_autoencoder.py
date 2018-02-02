@@ -7,8 +7,9 @@ from keras_anomaly_detection.demo.credit_card_demo.unzip_utils import unzip
 from keras_anomaly_detection.library.plot_utils import plot_confusion_matrix, plot_training_history, visualize_anomaly
 from keras_anomaly_detection.library.evaluation_utils import report_evaluation_metrics
 import numpy as np
+import os
 
-DO_TRAINING = True
+DO_TRAINING = False
 
 
 def preprocess_data(csv_data):
@@ -39,14 +40,14 @@ def main():
 
     training_history_file_path = model_dir_path + '/' + Conv1DAutoEncoder.model_name + '-history.npy'
     # fit the data and save model into model_dir_path
-    epochs = 100
+    epochs = 10
     history = None
     if DO_TRAINING:
         history = ae.fit(X, model_dir_path=model_dir_path,
                          estimated_negative_sample_ratio=estimated_negative_sample_ratio,
                          epochs=epochs)
         np.save(training_history_file_path, history)
-    else:
+    elif os.path.exists(training_history_file_path):
         history = np.load(training_history_file_path).item()
 
     # load back the model saved in model_dir_path
@@ -55,7 +56,7 @@ def main():
     Ypred = []
     _, Xtest, _, Ytest = train_test_split(X, Y, test_size=0.2, random_state=seed)
     reconstruction_error = []
-    adjusted_threshold = 14
+    adjusted_threshold = 10
     anomaly_information = ae.anomaly(Xtest, adjusted_threshold)
     for idx, (is_anomaly, dist) in enumerate(anomaly_information):
         predicted_label = 1 if is_anomaly else 0
