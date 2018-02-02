@@ -30,7 +30,7 @@ The following sample codes show how to fit and detect anomaly using Conv1DAutoEn
 ```python
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
-
+from keras_anomaly_detection.library.plot_utils import visualize_reconstruction_error
 from keras_anomaly_detection.library.convolutional import Conv1DAutoEncoder
 
 
@@ -55,8 +55,12 @@ def main():
     # load back the model saved in model_dir_path detect anomaly
     ae.load_model(model_dir_path)
     anomaly_information = ae.anomaly(ecg_np_data[:23, :])
+    reconstruction_error = []
     for idx, (is_anomaly, dist) in enumerate(anomaly_information):
         print('# ' + str(idx) + ' is ' + ('abnormal' if is_anomaly else 'normal') + ' (dist: ' + str(dist) + ')')
+        reconstruction_error.append(dist)
+
+    visualize_reconstruction_error(reconstruction_error, ae.threshold)
 
 
 if __name__ == '__main__':
@@ -68,7 +72,7 @@ The following sample codes show how to fit and detect anomaly using LstmAutoEnco
 ```python
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
-
+from keras_anomaly_detection.library.plot_utils import visualize_reconstruction_error
 from keras_anomaly_detection.library.recurrent import LstmAutoEncoder
 
 
@@ -90,8 +94,12 @@ def main():
     # load back the model saved in model_dir_path detect anomaly
     ae.load_model(model_dir_path)
     anomaly_information = ae.anomaly(ecg_np_data[:23, :])
+    reconstruction_error = []
     for idx, (is_anomaly, dist) in enumerate(anomaly_information):
         print('# ' + str(idx) + ' is ' + ('abnormal' if is_anomaly else 'normal') + ' (dist: ' + str(dist) + ')')
+        reconstruction_error.append(dist)
+
+    visualize_reconstruction_error(reconstruction_error, ae.threshold)
 
 
 if __name__ == '__main__':
@@ -103,7 +111,7 @@ The following sample codes show how to fit and detect anomaly using CnnLstmAutoE
 ```python
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
-
+from keras_anomaly_detection.library.plot_utils import visualize_reconstruction_error
 from keras_anomaly_detection.library.recurrent import CnnLstmAutoEncoder
 
 
@@ -125,8 +133,12 @@ def main():
     # load back the model saved in model_dir_path detect anomaly
     ae.load_model(model_dir_path)
     anomaly_information = ae.anomaly(ecg_np_data[:23, :])
+    reconstruction_error = []
     for idx, (is_anomaly, dist) in enumerate(anomaly_information):
         print('# ' + str(idx) + ' is ' + ('abnormal' if is_anomaly else 'normal') + ' (dist: ' + str(dist) + ')')
+        reconstruction_error.append(dist)
+
+    visualize_reconstruction_error(reconstruction_error, ae.threshold)
 
 
 if __name__ == '__main__':
@@ -138,7 +150,7 @@ The following sample codes show how to fit and detect anomaly using Bidirectiona
 ```python
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
-
+from keras_anomaly_detection.library.plot_utils import visualize_reconstruction_error
 from keras_anomaly_detection.library.recurrent import BidirectionalLstmAutoEncoder
 
 
@@ -160,8 +172,12 @@ def main():
     # load back the model saved in model_dir_path detect anomaly
     ae.load_model(model_dir_path)
     anomaly_information = ae.anomaly(ecg_np_data[:23, :])
+    reconstruction_error = []
     for idx, (is_anomaly, dist) in enumerate(anomaly_information):
         print('# ' + str(idx) + ' is ' + ('abnormal' if is_anomaly else 'normal') + ' (dist: ' + str(dist) + ')')
+        reconstruction_error.append(dist)
+
+    visualize_reconstruction_error(reconstruction_error, ae.threshold)
 
 
 if __name__ == '__main__':
@@ -173,7 +189,7 @@ The following sample codes show how to fit and detect anomaly using FeedForwardA
 ```python
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
-
+from keras_anomaly_detection.library.plot_utils import visualize_reconstruction_error
 from keras_anomaly_detection.library.feedforward import FeedForwardAutoEncoder
 
 
@@ -198,8 +214,12 @@ def main():
     # load back the model saved in model_dir_path detect anomaly
     ae.load_model(model_dir_path)
     anomaly_information = ae.anomaly(ecg_np_data[:23, :])
+    reconstruction_error = []
     for idx, (is_anomaly, dist) in enumerate(anomaly_information):
         print('# ' + str(idx) + ' is ' + ('abnormal' if is_anomaly else 'normal') + ' (dist: ' + str(dist) + ')')
+        reconstruction_error.append(dist)
+
+    visualize_reconstruction_error(reconstruction_error, ae.threshold)
 
 
 if __name__ == '__main__':

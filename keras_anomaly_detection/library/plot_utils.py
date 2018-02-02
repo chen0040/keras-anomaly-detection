@@ -46,3 +46,14 @@ def visualize_anomaly(y_true, reconstruction_error, threshold):
     plt.xlabel("Data point index")
     plt.show()
 
+
+def visualize_reconstruction_error(reconstruction_error, threshold):
+    plt.plot(reconstruction_error, marker='o', ms=3.5, linestyle='',
+             label='Point')
+
+    plt.hlines(threshold, xmin=0, xmax=len(reconstruction_error)-1, colors="r", zorder=100, label='Threshold')
+    plt.legend()
+    plt.title("Reconstruction error")
+    plt.ylabel("Reconstruction error")
+    plt.xlabel("Data point index")
+    plt.show()

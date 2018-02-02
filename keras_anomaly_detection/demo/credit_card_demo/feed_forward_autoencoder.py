@@ -50,23 +50,22 @@ def main():
     else:
         history = np.load(training_history_file_path).item()
 
-    # load back the model saved in model_dir_path detect anomaly
-    y_pred = []
+    # load back the model saved in model_dir_path
     ae.load_model(model_dir_path)
-    X, Y = preprocess_data(csv_data)
+    # detect anomaly for the test data
+    Ypred = []
     _, Xtest, _, Ytest = train_test_split(X, Y, test_size=0.2, random_state=seed)
     reconstruction_error = []
     anomaly_information = ae.anomaly(Xtest, 2.9)
     for idx, (is_anomaly, dist) in enumerate(anomaly_information):
         predicted_label = 1 if is_anomaly else 0
-        # print('# ' + str(idx) + ', actual: ' + str(actual_label) + ', predicted: ' + str(predicted_label))
-        y_pred.append(predicted_label)
+        Ypred.append(predicted_label)
         reconstruction_error.append(dist)
 
-    report_evaluation_metrics(Ytest, y_pred)
+    report_evaluation_metrics(Ytest, Ypred)
     plot_training_history(history)
     visualize_anomaly(Ytest, reconstruction_error, ae.threshold)
-    plot_confusion_matrix(Ytest, y_pred)
+    plot_confusion_matrix(Ytest, Ypred)
 
 
 if __name__ == '__main__':
