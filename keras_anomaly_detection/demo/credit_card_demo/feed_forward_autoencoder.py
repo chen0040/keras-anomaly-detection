@@ -27,7 +27,6 @@ def main():
     data_dir_path = './data'
     model_dir_path = './models'
 
-    # ecg data in which each row is a temporal sequence data of continuous values
     unzip(data_dir_path + '/creditcardfraud.zip', data_dir_path)
     csv_data = pd.read_csv(data_dir_path + '/creditcard.csv')
     estimated_negative_sample_ratio = 1 - csv_data['Class'].sum() / csv_data['Class'].count()
