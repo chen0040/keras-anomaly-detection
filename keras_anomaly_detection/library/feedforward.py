@@ -41,7 +41,7 @@ class FeedForwardAutoEncoder(object):
         model = Model(inputs=input_layer, outputs=decoder)
         model.compile(optimizer='adam',
                       loss='mean_squared_error',
-                      metrics=['mean_absolute_error'])
+                      metrics=['accuracy'])
 
         return model
 

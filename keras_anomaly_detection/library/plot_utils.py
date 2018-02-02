@@ -27,10 +27,10 @@ def plot_training_history(history):
     plt.show()
 
 
-def visualize_anomaly(y_true, mse, threshold):
-    error_df = pd.DataFrame({'reconstruction_error': mse,
+def visualize_anomaly(y_true, reconstruction_error, threshold):
+    error_df = pd.DataFrame({'reconstruction_error': reconstruction_error,
                              'true_class': y_true})
-    error_df.describe()
+    print(error_df.describe())
 
     groups = error_df.groupby('true_class')
     fig, ax = plt.subplots()
