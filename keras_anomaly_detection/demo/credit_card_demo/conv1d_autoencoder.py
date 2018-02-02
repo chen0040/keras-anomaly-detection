@@ -2,13 +2,13 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-from keras_anomaly_detection.library.feedforward import FeedForwardAutoEncoder
+from keras_anomaly_detection.library.convolutional import Conv1DAutoEncoder
 from keras_anomaly_detection.demo.credit_card_demo.unzip_utils import unzip
 from keras_anomaly_detection.library.plot_utils import plot_confusion_matrix, plot_training_history, visualize_anomaly
 from keras_anomaly_detection.library.evaluation_utils import report_evaluation_metrics
 import numpy as np
 
-DO_TRAINING = False
+DO_TRAINING = True
 
 
 def preprocess_data(csv_data):
@@ -35,17 +35,16 @@ def main():
     X, Y = preprocess_data(csv_data)
     print(X.shape)
 
-    ae = FeedForwardAutoEncoder()
+    ae = Conv1DAutoEncoder()
 
-    training_history_file_path = model_dir_path + '/' + FeedForwardAutoEncoder.model_name + '-history.npy'
+    training_history_file_path = model_dir_path + '/' + Conv1DAutoEncoder.model_name + '-history.npy'
     # fit the data and save model into model_dir_path
     epochs = 100
     history = None
     if DO_TRAINING:
         history = ae.fit(X, model_dir_path=model_dir_path,
                          estimated_negative_sample_ratio=estimated_negative_sample_ratio,
-                         nb_epoch=epochs,
-                         random_state=seed)
+                         epochs=epochs)
         np.save(training_history_file_path, history)
     else:
         history = np.load(training_history_file_path).item()

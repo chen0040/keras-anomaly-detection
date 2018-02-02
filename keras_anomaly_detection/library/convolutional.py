@@ -50,7 +50,7 @@ class Conv1DAutoEncoder(object):
         weight_file_path = Conv1DAutoEncoder.get_weight_file(model_dir_path)
         self.model.load_weights(weight_file_path)
 
-    def fit(self, timeseries_dataset, model_dir_path, batch_size=None, epochs=None, validation_split=None, metric=None,
+    def fit(self, dataset, model_dir_path, batch_size=None, epochs=None, validation_split=None, metric=None,
             estimated_negative_sample_ratio=None):
         if batch_size is None:
             batch_size = 8
@@ -63,23 +63,23 @@ class Conv1DAutoEncoder(object):
         if estimated_negative_sample_ratio is None:
             estimated_negative_sample_ratio = 0.9
 
-        self.time_window_size = timeseries_dataset.shape[1]
+        self.time_window_size = dataset.shape[1]
         self.metric = metric
 
-        input_timeseries_dataset = np.expand_dims(timeseries_dataset, axis=2)
+        input_timeseries_dataset = np.expand_dims(dataset, axis=2)
 
         weight_file_path = Conv1DAutoEncoder.get_weight_file(model_dir_path=model_dir_path)
         architecture_file_path = Conv1DAutoEncoder.get_architecture_file(model_dir_path)
         checkpoint = ModelCheckpoint(weight_file_path)
         self.model = Conv1DAutoEncoder.create_model(self.time_window_size, metric=self.metric)
         open(architecture_file_path, 'w').write(self.model.to_json())
-        self.model.fit(x=input_timeseries_dataset, y=timeseries_dataset,
-                       batch_size=batch_size, epochs=epochs,
-                       verbose=Conv1DAutoEncoder.VERBOSE, validation_split=validation_split,
-                       callbacks=[checkpoint])
+        history = self.model.fit(x=input_timeseries_dataset, y=dataset,
+                                 batch_size=batch_size, epochs=epochs,
+                                 verbose=Conv1DAutoEncoder.VERBOSE, validation_split=validation_split,
+                                 callbacks=[checkpoint]).history
         self.model.save_weights(weight_file_path)
 
-        scores = self.predict(timeseries_dataset)
+        scores = self.predict(dataset)
         scores.sort()
         cut_point = int(estimated_negative_sample_ratio * len(scores))
         self.threshold = scores[cut_point]
@@ -92,6 +92,8 @@ class Conv1DAutoEncoder(object):
         self.config['threshold'] = self.threshold
         config_file_path = Conv1DAutoEncoder.get_config_file(model_dir_path=model_dir_path)
         np.save(config_file_path, self.config)
+
+        return history
 
     def predict(self, timeseries_dataset):
         input_timeseries_dataset = np.expand_dims(timeseries_dataset, axis=2)
