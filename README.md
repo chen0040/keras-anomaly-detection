@@ -23,7 +23,7 @@ to:
 
 ### Detect Anomaly within the ECG Data
 
-The sample codes can be found in the [keras_anomaly_detection/demo](keras_anomaly_detection/demo).
+The sample codes can be found in the [keras_anomaly_detection/demo/ecg_demo](keras_anomaly_detection/demo/ecg_demo).
 
 The following sample codes show how to fit and detect anomaly using Conv1DAutoEncoder:
 
@@ -35,8 +35,8 @@ from keras_anomaly_detection.library.convolutional import Conv1DAutoEncoder
 
 
 def main():
-    data_dir_path = '../training/data'
-    model_dir_path = '../training/models'
+    data_dir_path = './data'
+    model_dir_path = './models'
 
     # ecg data in which each row is a temporal sequence data of continuous values
     ecg_data = pd.read_csv(data_dir_path + '/ecg_discord_test.csv', header=None)
@@ -73,8 +73,8 @@ from keras_anomaly_detection.library.recurrent import LstmAutoEncoder
 
 
 def main():
-    data_dir_path = '../training/data'
-    model_dir_path = '../training/models'
+    data_dir_path = './data'
+    model_dir_path = './models'
     ecg_data = pd.read_csv(data_dir_path + '/ecg_discord_test.csv', header=None)
     print(ecg_data.head())
     ecg_np_data = ecg_data.as_matrix()
@@ -108,8 +108,8 @@ from keras_anomaly_detection.library.recurrent import CnnLstmAutoEncoder
 
 
 def main():
-    data_dir_path = '../training/data'
-    model_dir_path = '../training/models'
+    data_dir_path = './data'
+    model_dir_path = './models'
     ecg_data = pd.read_csv(data_dir_path + '/ecg_discord_test.csv', header=None)
     print(ecg_data.head())
     ecg_np_data = ecg_data.as_matrix()
@@ -143,8 +143,8 @@ from keras_anomaly_detection.library.recurrent import BidirectionalLstmAutoEncod
 
 
 def main():
-    data_dir_path = '../training/data'
-    model_dir_path = '../training/models'
+    data_dir_path = './data'
+    model_dir_path = './models'
     ecg_data = pd.read_csv(data_dir_path + '/ecg_discord_test.csv', header=None)
     print(ecg_data.head())
     ecg_np_data = ecg_data.as_matrix()
@@ -178,8 +178,8 @@ from keras_anomaly_detection.library.feedforward import FeedForwardAutoEncoder
 
 
 def main():
-    data_dir_path = '../training/data'
-    model_dir_path = '../training/models'
+    data_dir_path = './data'
+    model_dir_path = './models'
 
     # ecg data in which each row is a temporal sequence data of continuous values
     ecg_data = pd.read_csv(data_dir_path + '/ecg_discord_test.csv', header=None)
@@ -208,7 +208,7 @@ if __name__ == '__main__':
 
 # Detect Fraud in Credit Card Transaction
 
-The sample codes can be found in the [keras_anomaly_detection/demo](keras_anomaly_detection/demo/credit_card_demo).
+The sample codes can be found in the [keras_anomaly_detection/demo/credit_card_demo](keras_anomaly_detection/demo/credit_card_demo).
 
 The credit card sample data is from [this repo](https://github.com/curiousily/Credit-Card-Fraud-Detection-using-Autoencoders-in-Keras/blob/master/fraud_detection.ipynb)
 
@@ -218,7 +218,7 @@ The credit card sample data is from [this repo](https://github.com/curiousily/Cr
 # Note
 
 There is also an autoencoder from H2O for timeseries anomaly detection in 
-[keras_anomaly_detection/demo/h2o_ecg_pulse_detection.py](keras_anomaly_detection/demo/h2o_ecg_pulse_detection.py)
+[keras_anomaly_detection/demo/h2o_ecg_pulse_detection.py](keras_anomaly_detection/demo/ecg_demo/h2o_ecg_pulse_detection.py)
 
 
 
