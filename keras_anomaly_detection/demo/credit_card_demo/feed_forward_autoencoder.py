@@ -3,8 +3,8 @@ from sklearn.preprocessing import StandardScaler
 
 from keras_anomaly_detection.library.feedforward import FeedForwardAutoEncoder
 from keras_anomaly_detection.demo.credit_card_demo.unzip_utils import unzip
-from keras_anomaly_detection.library.plot_utils import plot_confusion_matrix
-from keras_anomaly_detection.library.report_utils import  report_mtrics
+from keras_anomaly_detection.library.plot_utils import plot_confusion_matrix, plot_training_history, visualize_anomaly
+from keras_anomaly_detection.library.report_utils import report_evaluation_metrics
 import numpy as np
 
 DO_TRAINING = False
@@ -19,7 +19,8 @@ def preprocss_data(csv_data):
 
 
 def main():
-    np.random.seed(42)
+    seed = 42
+    np.random.seed(seed)
 
     data_dir_path = './data'
     model_dir_path = './models'
@@ -34,17 +35,25 @@ def main():
 
     ae = FeedForwardAutoEncoder()
 
+    training_history_file_path = model_dir_path + '/' + FeedForwardAutoEncoder.model_name + '-history.npy'
     # fit the data and save model into model_dir_path
     epochs = 100
+    history = None
     if DO_TRAINING:
-        ae.fit(credit_card_np_data, model_dir_path=model_dir_path,
-               estimated_negative_sample_ratio=estimated_negative_sample_ratio, nb_epoch=epochs)
+        history = ae.fit(credit_card_np_data, model_dir_path=model_dir_path,
+                         estimated_negative_sample_ratio=estimated_negative_sample_ratio,
+                         nb_epoch=epochs,
+                         random_state=seed)
+        np.save(training_history_file_path, history)
+    else:
+        history = np.load(training_history_file_path).item()
 
     # load back the model saved in model_dir_path detect anomaly
     y_true = []
     y_pred = []
     ae.load_model(model_dir_path)
     test_data = preprocss_data(csv_data)
+    mse = ae.predict(test_data)
     anomaly_information = ae.anomaly(test_data)
     for idx, (is_anomaly, dist) in enumerate(anomaly_information):
         actual_label = csv_data['Class'][idx]
@@ -53,7 +62,9 @@ def main():
         y_true.append(actual_label)
         y_pred.append(predicted_label)
 
-    report_mtrics(y_true, y_pred)
+    report_evaluation_metrics(y_true, y_pred)
+    plot_training_history(history)
+    visualize_anomaly(y_true, mse)
     plot_confusion_matrix(y_true, y_pred)
 
 

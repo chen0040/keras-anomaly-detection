@@ -1,7 +1,7 @@
 from sklearn.metrics import average_precision_score, recall_score, precision_score, f1_score
 
 
-def report_mtrics(y_true, y_pred):
+def report_evaluation_metrics(y_true, y_pred):
     average_precision = average_precision_score(y_true, y_pred)
     precision = precision_score(y_true, y_pred, labels=[0, 1], pos_label=1)
     recall = recall_score(y_true, y_pred, labels=[0, 1], pos_label=1)
