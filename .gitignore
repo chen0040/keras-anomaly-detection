@@ -9,7 +9,6 @@ __pycache__/
 .idea/
 *.iml
 
-notebooks/
 
 
 # Distribution / packaging

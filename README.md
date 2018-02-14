@@ -23,7 +23,7 @@ to:
 
 ### Detect Anomaly within the ECG Data
 
-The sample codes can be found in the [keras_anomaly_detection/demo/ecg_demo](keras_anomaly_detection/demo/ecg_demo).
+The sample codes can be found in the [demo/ecg_demo](demo/ecg_demo).
 
 The following sample codes show how to fit and detect anomaly using Conv1DAutoEncoder:
 
@@ -228,7 +228,7 @@ if __name__ == '__main__':
 
 # Detect Fraud in Credit Card Transaction
 
-The sample codes can be found in the [keras_anomaly_detection/demo/credit_card_demo](keras_anomaly_detection/demo/credit_card_demo).
+The sample codes can be found in the [demo/credit_card_demo](demo/credit_card_demo).
 
 The credit card sample data is from [this repo](https://github.com/curiousily/Credit-Card-Fraud-Detection-using-Autoencoders-in-Keras/blob/master/fraud_detection.ipynb)
 
@@ -391,7 +391,7 @@ if __name__ == '__main__':
 # Note
 
 There is also an autoencoder from H2O for timeseries anomaly detection in 
-[keras_anomaly_detection/demo/h2o_ecg_pulse_detection.py](keras_anomaly_detection/demo/ecg_demo/h2o_ecg_pulse_detection.py)
+[demo/h2o_ecg_pulse_detection.py](demo/ecg_demo/h2o_ecg_pulse_detection.py)
 
 
 
