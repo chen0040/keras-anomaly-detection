@@ -393,6 +393,14 @@ if __name__ == '__main__':
 There is also an autoencoder from H2O for timeseries anomaly detection in 
 [demo/h2o_ecg_pulse_detection.py](demo/ecg_demo/h2o_ecg_pulse_detection.py)
 
+### Configure to run on GPU on Windows
+
+* Step 1: Change tensorflow to tensorflow-gpu in requirements.txt and install tensorflow-gpu
+* Step 2: Download and install the [CUDA® Toolkit 9.0](https://developer.nvidia.com/cuda-90-download-archive) (Please note that
+currently CUDA® Toolkit 9.1 is not yet supported by tensorflow, therefore you should download CUDA® Toolkit 9.0)
+* Step 3: Download and unzip the [cuDNN 7.0.4 for CUDA@ Toolkit 9.0](https://developer.nvidia.com/cudnn) and add the
+bin folder of the unzipped directory to the $PATH of your Windows environment 
+
 
 
 
